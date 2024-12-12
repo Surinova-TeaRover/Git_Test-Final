@@ -51,7 +51,8 @@ UART_HandleTypeDef huart4;
 UART_HandleTypeDef huart5;
 
 /* USER CODE BEGIN PV */
-
+uint8_t Mode=1,Mode_Temp, Speed=1, Joystick=0,Joystick_Brake=0, Steering_Mode=1, Shearing=2, Skiffing=0, Side_Trimmer=0, Pot_Angle=90, Joystick_Temp=0, Shearing_Temp=0, Steering_Mode_Temp=1, BT_Steer_Temp=0, Prev_Joystick = 0, Speed_Temp = 0;		 
+uint8_t BT_Rx[9];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -63,18 +64,14 @@ static void MX_UART4_Init(void);
 static void MX_UART5_Init(void);
 static void MX_TIM14_Init(void);
 static void MX_I2C1_Init(void);
+
+void Joystick_Reception(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
-void Toggle_By_Jeshwin(void)
-{
-	HAL_GPIO_TogglePin( GPIOA, GPIO_PIN_2);
-	HAL_Delay(1000);
-}
 
 /* USER CODE END 0 */
 
@@ -122,11 +119,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	
     /* USER CODE BEGIN 3 */
-		
-		Toggle_By_Jeshwin();
-		
+		Joystick_Reception();
   }
   /* USER CODE END 3 */
 }
@@ -441,7 +436,21 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void Joystick_Reception(void)
+{
+	//Joy_Loop++;
+//	BT_State=BT_STATED_READ;
+	
+	if ((BT_Rx[0] == 0xAA ) &&	( BT_Rx[7] == 0xFF ))
+	{	
+		Mode 						 = BT_Rx[1];
+		Speed 					 = BT_Rx[2]  != 0 ? BT_Rx[2] : Speed ;	
+		Steering_Mode 	 = BT_Rx[3];
+		Pot_Angle 			 = BT_Rx[4]; 
+		Joystick 				 = BT_Rx[5];
+		Shearing				 = BT_Rx[6];
+	}	
+}
 /* USER CODE END 4 */
 
 /**
