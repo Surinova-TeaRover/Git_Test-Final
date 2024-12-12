@@ -70,6 +70,12 @@ static void MX_I2C1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void Toggle_By_Jeshwin(void)
+{
+	HAL_GPIO_TogglePin( GPIOA, GPIO_PIN_2);
+	HAL_Delay(1000);
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -118,6 +124,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		
+		Toggle_By_Jeshwin();
+		
   }
   /* USER CODE END 3 */
 }
